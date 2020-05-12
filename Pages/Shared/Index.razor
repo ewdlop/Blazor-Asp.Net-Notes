@@ -1,0 +1,54 @@
+﻿@page "/"
+@inject IMarvelCharacterService MarvelCharacterService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject UserManager<ApplicationUser> UserManager
+@inject IConfiguration Configuration
+
+<button class="btn btn-primary" @onclick=@Authenticate>Authenticate</button>
+<div>Token:@_token</div>
+<div>Error Message:@_exception</div>
+
+@code{
+
+    private string _token;
+    private string _exception;
+    private async Task Authenticate()
+    {
+        try
+        {
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var authenticatedUser = authState.User;
+            if (authenticatedUser.Identity.IsAuthenticated)
+            {
+                var user = await UserManager.GetUserAsync(authenticatedUser);
+                var tokenHandler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes(Configuration.GetSection("Token").GetSection("Key").Value);
+                var tokenDescriptor = new System.IdentityModel.Tokens.Jwt.JwtSecurityToken(
+                    claims: new[]
+                    {
+                        //new Claim(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.UniqueName,user.UserName ),
+                        //Raymond: I beleive this was desgin for SOAP for XML, and not for Jwt(Json web Token)
+                        //But we need this for the Role
+                        new Claim(ClaimTypes.Name,user.UserName)
+                    },
+                    expires: DateTime.UtcNow.AddMinutes(10),
+                    signingCredentials: new Microsoft.IdentityModel.Tokens.SigningCredentials(
+                        new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(key),
+                        Microsoft.IdentityModel.Tokens.SecurityAlgorithms.HmacSha256Signature)
+                );
+                _token = tokenHandler.WriteToken(tokenDescriptor);
+
+            }
+        }
+        catch(Exception e)
+        {
+            _exception = e.ToString();
+        }
+
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        //await MarvelCharacterService.GetMoreMarvelCharacterAsync();
+    }
+}

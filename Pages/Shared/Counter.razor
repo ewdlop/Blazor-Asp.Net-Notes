@@ -1,0 +1,36 @@
+﻿@page "/counter"
+@attribute [Authorize]
+@inject AppState AppState
+@implements IDisposable
+
+<h1>Counter</h1>
+
+<p>Current count: @currentCount</p>
+<p>State string: @AppState.SelectedColour</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<RedComponent>
+
+</RedComponent>
+
+<BlueComponent>
+
+</BlueComponent>
+@code {
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+
+    protected override void OnInitialized()
+    {
+        AppState.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        AppState.OnChange -= StateHasChanged;
+    }
+}

@@ -1,0 +1,82 @@
+﻿@page "/characters"
+@attribute [Authorize]
+@using BlazorServerApp.Models
+@using BlazorServerApp.Services
+@inject IMarvelCharacterService  MarvelCharacterService
+<style>
+    ul.marvel-comics {
+        height: 250px;
+        overflow-y: scroll;
+    }
+</style>
+@if (_hasLoaded)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Picture</th>
+                <th>Description</th>
+                <th>Comic</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var character in _characters)
+            {
+                <tr>
+                    <td>@character.id</td>
+                    <td>
+                        <img src="@(character.thumbnail.path + "." + character.thumbnail.extension)" width="250" height="250" />
+                    </td>
+                    <td>
+                        @character.description
+                    </td>
+                    <td>
+                        <ul class="marvel-comics">
+                            @foreach (var comic in character.comics.items)
+                            {
+                                <li>
+                                    <a href="@comic.resourceURI">@comic.name</a>
+                                </li>
+                            }
+                        </ul>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div>
+        <button class="btn btn-primary @((_currentPage-1 <= 0)? "disabled": "")" @onclick="@(()=>LoadStateAsync(_currentPage-1))">Previous</button>
+        @if (_charactersCount >= 10)
+        {
+            <button class="btn btn-primary" @onclick="@(()=>LoadStateAsync(_currentPage+1))">Next</button>
+        }
+
+    </div>
+}
+else
+{
+    <p>Loading...</p>
+}
+
+@code {
+    private bool _hasLoaded;
+
+    private int _currentPage = 1;
+    private int _charactersCount = 0;
+    private IEnumerable<MarvelCharactersResult> _characters;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadStateAsync(1);
+        _hasLoaded = true;
+    }
+
+    private async Task LoadStateAsync(int page)
+    {
+        _characters = await MarvelCharacterService.GetMarvelCharactersAsync(page);
+        _charactersCount = _characters.Count();
+        _currentPage = page;
+    }
+}

@@ -1,0 +1,14 @@
+﻿<AuthorizeView>
+    <Authorized>
+        <a href="Identity/Account/Manage">Hello, @context.User.Identity.Name!</a>
+        <form method="post" action="Identity/Account/LogOut">
+            <button type="submit" class="nav-link btn btn-link">Log out</button>
+        </form>
+    </Authorized>
+    <Authorizing>
+        <h1>Authorizing...</h1>
+    </Authorizing>
+    <NotAuthorized>
+        <BlazorServerApp.Pages.RedirectToLogin/>
+    </NotAuthorized>
+</AuthorizeView>
