@@ -22,7 +22,7 @@
             {
                 var user = await UserManager.GetUserAsync(authenticatedUser);
                 var tokenHandler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
-                var key = Encoding.ASCII.GetBytes(Configuration.GetSection("Token").GetSection("Key").Value);
+                var key = Encoding.ASCII.GetBytes(Configuration.GetSection("JWToken").GetSection("Key").Value);
                 var tokenDescriptor = new System.IdentityModel.Tokens.Jwt.JwtSecurityToken(
                     claims: new[]
                     {
@@ -30,7 +30,7 @@
                         //Raymond: I beleive this was desgin for SOAP for XML, and not for Jwt(Json web Token)
                         //But we need this for the Role
                         new Claim(ClaimTypes.Name,user.UserName)
-                    },
+                        },
                     expires: DateTime.UtcNow.AddMinutes(10),
                     signingCredentials: new Microsoft.IdentityModel.Tokens.SigningCredentials(
                         new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(key),
@@ -40,7 +40,7 @@
 
             }
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             _exception = e.ToString();
         }

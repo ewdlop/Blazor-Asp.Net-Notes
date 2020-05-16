@@ -1,10 +1,8 @@
-﻿using Blazored.SessionStorage;
-using BlazorServerApp.Models;
+﻿using BlazorServerApp.Models;
 using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
@@ -52,15 +50,15 @@ namespace BlazorServerApp.Services
         {
             //https://developer.marvel.com/
             List<MarvelCharactersResult> MarvelCharacters = new List<MarvelCharactersResult>();
-            string publicKey = "publicKey";
-            string privateKey = "privateKey";
+            const string publicKey = "publicKey";
+            const string privateKey = "privateKey";
 
             using (var httpClient = _clientFactory.CreateClient())
             {
                 string timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();
-                MD5 md5 = System.Security.Cryptography.MD5.Create();
+                MD5 md5 = MD5.Create();
                 string input = timestamp + privateKey + publicKey;
-                byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
+                byte[] inputBytes = Encoding.ASCII.GetBytes(input);
                 //The portal uses MD5 apparently?
                 byte[] hash = md5.ComputeHash(inputBytes);
                 StringBuilder sb = new StringBuilder();
@@ -70,7 +68,9 @@ namespace BlazorServerApp.Services
                 }
                 string hashString = sb.ToString();
                 //500
-                string url = $"https://gateway.marvel.com:443/v1/public/characters?limit=50&offset=50&ts={timestamp}&apikey={publicKey}&hash={hashString}";
+                const int limit = 50;
+                const int offset = 50;
+                string url = $"https://gateway.marvel.com:443/v1/public/characters?limit={limit}&offset={offset}&ts={timestamp}&apikey={publicKey}&hash={hashString}";
                 using (var response = await httpClient.GetAsync(url))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();

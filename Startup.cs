@@ -20,6 +20,13 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using System;
+using BlazorServerApp.Services.Providers;
+using BlazorServerApp.Services.Options;
+using Gremlin.Net.Driver;
+using Gremlin.Net.Structure.IO.GraphSON;
 
 namespace BlazorServerApp
 {
@@ -37,23 +44,53 @@ namespace BlazorServerApp
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+
+            services.AddDefaultIdentity<ApplicationUser>(
+                options => {
+                    options.SignIn.RequireConfirmedAccount = false;
+                    options.Tokens.ProviderMap.Add("CustomEmailConfirmation",
+                        new TokenProviderDescriptor(
+                            typeof(CustomEmailConfirmationTokenProvider<ApplicationUser>)));
+                                options.Tokens.EmailConfirmationTokenProvider = "CustomEmailConfirmation";
+                })
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddTransient<CustomEmailConfirmationTokenProvider<ApplicationUser>>();
+
+            services.ConfigureApplicationCookie(o => {
+                o.ExpireTimeSpan = TimeSpan.FromDays(5);
+                o.SlidingExpiration = true;
+            });
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<ApplicationUser>>();
+           
             //One client instance per container
             services.AddSingleton<ICosmosDbService<MarvelCharactersResult>>(InitializeCosmosClientInstanceAsync<MarvelCharactersResult>(Configuration.GetSection("CosmosDb"), "MarvelCharactersResult").GetAwaiter().GetResult());
+            
+            services.AddScoped<IGremlinClient, GremlinClient>((serviceProvider) =>
+            {
+                var config = serviceProvider.GetRequiredService<IConfiguration>();
+                string EndpointUrl = config.GetSection("CosmosDbGreminlin").GetSection("Endpoint").Value;
+                string PrimaryKey = config.GetSection("CosmosDbGreminlin").GetSection("PrimaryKey").Value;
+                const int port = 443;
+                string database = config.GetSection("CosmosDbGreminlin").GetSection("DatabaseName").Value;
+                string container = config.GetSection("CosmosDbGreminlin").GetSection("ContainerName").Value;
+                GremlinServer gremlinServer = new GremlinServer(EndpointUrl, port, enableSsl: true,
+                                    username: "/dbs/" + database + "/colls/" + container,
+                                    password: PrimaryKey);
+                return new GremlinClient(gremlinServer, new GraphSON2Reader(), new GraphSON2Writer(), GremlinClient.GraphSON2MimeType);
+            });
+            services.AddSingleton<ICosmosDbGremlinService, CosmosDbGremlinService>();
             services.AddHttpClient();
             services.AddScoped<AppState>();
-            services.AddScoped<IMarvelCharacterService, MarvelCharacterService>();
+            services.AddSingleton<IMarvelCharacterService, MarvelCharacterService>();
             services.AddSignalR();
 
             services.AddAuthorization(options =>
             {
                 //options.AddPolicy("Name", policy => policy.RequireClaim(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.UniqueName));
-                //options.AddPolicy("Name", policy => policy.RequireClaim(ClaimTypes.Name));
                 options.AddPolicy("Name", policy => policy.RequireClaim(ClaimTypes.Name));
             });
 
@@ -70,12 +107,16 @@ namespace BlazorServerApp
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetSection("Token").GetSection("Key").Value)),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetSection("JWToken").GetSection("Key").Value)),
                     ValidateLifetime = true,
                     ValidateAudience = false,
                     ValidateIssuer = false
                 };
             });
+
+            services.AddTransient<IEmailSender, EmailSender>();
+            services.Configure<AuthMessageSenderOptions>(Configuration);
+            services.AddHttpContextAccessor();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -117,7 +158,7 @@ namespace BlazorServerApp
         {
             string databaseName = configurationSection.GetSection("DatabaseName").Value;
             string account = configurationSection.GetSection("Account").Value;
-            string key = configurationSection.GetSection("Key").Value;
+            string key = configurationSection.GetSection("PrimaryKey").Value;
             CosmosClientBuilder clientBuilder = new CosmosClientBuilder(account, key);
             CosmosClient client = clientBuilder
                                 .WithConnectionModeDirect()
