@@ -1,32 +1,32 @@
-using System.Threading.Tasks;
+using Blazorise;
+using Blazorise.Bootstrap;
+using Blazorise.Icons.FontAwesome;
+using BlazorServerApp.Areas.Identity.Data;
+using BlazorServerApp.Areas.Identity;
+using BlazorServerApp.Data;
+using BlazorServerApp.Models;
+using BlazorServerApp.Services.Options;
+using BlazorServerApp.Services.Providers;
+using BlazorServerApp.Services;
+using Gremlin.Net.Driver;
+using Gremlin.Net.Structure.IO.GraphSON;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Azure.Cosmos.Fluent;
+using Microsoft.Azure.Cosmos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using BlazorServerApp.Areas.Identity;
-using BlazorServerApp.Data;
-using BlazorServerApp.Services;
-using Microsoft.Azure.Cosmos.Fluent;
-using Microsoft.Azure.Cosmos;
-using BlazorServerApp.Models;
-using Blazored.SessionStorage;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using BlazorServerApp.Areas.Identity.Data;
-using System.Text;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.Extensions.DependencyInjection.Extensions;
+using System.Text;
+using System.Threading.Tasks;
 using System;
-using BlazorServerApp.Services.Providers;
-using BlazorServerApp.Services.Options;
-using Gremlin.Net.Driver;
-using Gremlin.Net.Structure.IO.GraphSON;
 
 namespace BlazorServerApp
 {
@@ -46,29 +46,31 @@ namespace BlazorServerApp
                     Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDefaultIdentity<ApplicationUser>(
-                options => {
+                options =>
+                {
                     options.SignIn.RequireConfirmedAccount = false;
                     options.Tokens.ProviderMap.Add("CustomEmailConfirmation",
                         new TokenProviderDescriptor(
                             typeof(CustomEmailConfirmationTokenProvider<ApplicationUser>)));
-                                options.Tokens.EmailConfirmationTokenProvider = "CustomEmailConfirmation";
+                    options.Tokens.EmailConfirmationTokenProvider = "CustomEmailConfirmation";
                 })
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddTransient<CustomEmailConfirmationTokenProvider<ApplicationUser>>();
 
-            services.ConfigureApplicationCookie(o => {
+            services.ConfigureApplicationCookie(o =>
+            {
                 o.ExpireTimeSpan = TimeSpan.FromDays(5);
                 o.SlidingExpiration = true;
             });
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<ApplicationUser>>();
-           
+
             //One client instance per container
             services.AddSingleton<ICosmosDbService<MarvelCharactersResult>>(InitializeCosmosClientInstanceAsync<MarvelCharactersResult>(Configuration.GetSection("CosmosDb"), "MarvelCharactersResult").GetAwaiter().GetResult());
-            
+
             services.AddScoped<IGremlinClient, GremlinClient>((serviceProvider) =>
             {
                 var config = serviceProvider.GetRequiredService<IConfiguration>();
@@ -117,6 +119,12 @@ namespace BlazorServerApp
             services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
             services.AddHttpContextAccessor();
+
+            services
+              .AddBlazorise(options =>
+              {
+              }).AddBootstrapProviders().AddFontAwesomeIcons();
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -140,6 +148,10 @@ namespace BlazorServerApp
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.ApplicationServices
+              .UseBootstrapProviders()
+              .UseFontAwesomeIcons();
 
             app.UseEndpoints(endpoints =>
             {

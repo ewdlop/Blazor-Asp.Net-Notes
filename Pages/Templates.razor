@@ -1,0 +1,43 @@
+﻿@page "/templates"
+
+<TableTemplate Items="_pets" Context="pet">
+    <TableHeader>
+        <th>ID</th>
+        <th>Name</th>
+    </TableHeader>
+    <RowTemplate>
+        <td>@pet.Id</td>
+        <td>@pet.Name</td>
+    </RowTemplate>
+    <TableFooter>
+        <td>Id</td>
+        <td>Name</td>
+    </TableFooter>
+</TableTemplate>
+
+<ListViewTemplate Items="_pets">
+    <ItemTemplate Context="pet">
+        <li>@pet.Name</li>
+    </ItemTemplate>
+</ListViewTemplate>
+
+@code {
+
+    private List<Pet> _pets = new List<Pet>();
+
+    protected override void OnInitialized()
+    {
+        var pet1 = new Pet()
+        {
+            Id = Guid.NewGuid(),
+            Name = "Buddy "
+        };
+        var pet2 = new Pet()
+        {
+            Id = Guid.NewGuid(),
+            Name = "Charlie"
+        };
+        _pets.Add(pet1);
+        _pets.Add(pet2);
+    }
+}

@@ -1,21 +1,37 @@
 ﻿@page "/gremlinPage"
 @inject ICosmosDbGremlinService CosmosDbGremlinService
 
-<h3>Gremlin</h3>
+<link rel="stylesheet" href="css/gremlin.css" type="text/css" />
+<h3>Azure CosmosDB Gremlin API</h3>
 @{
-    foreach (var queries in _gremlinQueries)
-    {
-        <div>
-            <button class="btn btn-danger" @onclick="()=>Submit(queries.Value)">@queries.Key</button>
-        </div>
-    }
+    int count = 0;
+    <Accordion>
+        @foreach (var queries in _gremlinQueries)
+        {
+            count++;
+            int i = count;
+            <Collapse Visible=@(_collapseVisible[$"collapse{i}Visible"])>
+                <CollapseHeader>
+                    <Heading Size="HeadingSize.Is5">
+                        <Button Color="Color.Primary" Clicked="@(()=>_collapseVisible[$"collapse{i}Visible"] = !_collapseVisible[$"collapse{i}Visible"])">@queries.Key</Button>
+                    </Heading>
+                </CollapseHeader>
+                <CollapseBody>
+                    @queries.Value
+                    <Button Color="Color.Danger" Clicked="()=>Submit(queries.Value)">Submit</Button>
+                </CollapseBody>
+            </Collapse>
+        }
+    </Accordion>
 }
 <div>@_exception</div>
+
 @code {
     private string _repsone;
     private string _exception;
+    private Dictionary<string, bool> _collapseVisible = new Dictionary<string,bool>();
     private Dictionary<string, string> _gremlinQueries = new Dictionary<string, string>
-{
+    {
         { "Cleanup",        "g.V().drop()" },
         { "AddVertex 1",    "g.addV('person').property('id', 'thomas').property('firstName', 'Thomas').property('age', 44).property('pk', 'pk')" },
         { "AddVertex 2",    "g.addV('person').property('id', 'mary').property('firstName', 'Mary').property('lastName', 'Andersen').property('age', 39).property('pk', 'pk')" },
@@ -36,6 +52,24 @@
         { "CountEdges",     "g.E().count()" },
         { "DropVertex",     "g.V('thomas').drop()" }
     };
+
+    protected override void OnInitialized()
+    {
+        int i = 0;
+        foreach (var queries in _gremlinQueries)
+        {
+            i++;
+            if(i == 1)
+            {
+                _collapseVisible.Add($"collapse{i}Visible", true);
+            }
+            else
+            {
+                _collapseVisible.Add($"collapse{i}Visible", false);
+            }
+        }
+    }
+
     private async Task Submit(string query)
     {
         try

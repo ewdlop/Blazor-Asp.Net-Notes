@@ -5,35 +5,39 @@
 
 <div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">Blazor Server App</a>
-    <button class="navbar-toggler" @onclick="ToggleNavMenu">
+    <button class="navbar-toggler">
         <span class="navbar-toggler-icon"></span>
     </button>
 </div>
 
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+<div>
     <ul class="nav flex-column">
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
+                <span class="oi oi-key" aria-hidden="true"></span> Token Authentication
             </NavLink>
         </li>
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="characters">
-                <span class="oi oi-person" aria-hidden="true"></span> Character
+                <span class="oi oi-person" aria-hidden="true"></span> Marvel Characters
             </NavLink>
         </li>
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="gremlinPage">
-                <span class="oi oi-person" aria-hidden="true"></span> Gremlin
+                <span class="oi oi-bolt" aria-hidden="true"></span> Gremlin
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="templates">
+                <span class="oi oi-script" aria-hidden="true"></span> Templates
             </NavLink>
         </li>
     </ul>
-
 </div>
 
 
 @code {
-    private bool collapseNavMenu = true;
+    private bool collapseNavMenu = false;
 
     private HubConnection _hubConnection;
 
@@ -43,24 +47,34 @@
 
     private string _messageInput;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        _hubConnection = new HubConnectionBuilder()
-            .WithUrl(NavigationManager.ToAbsoluteUri("/chatHub"))
-            .Build();
-
-        _hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
+        try
         {
-            var encodedMsg = $"{user}: {message}";
-            _messages.Add(encodedMsg);
-            StateHasChanged();
-        });
+            if(firstRender)
+            {
+                _hubConnection = new HubConnectionBuilder()
+                .WithUrl(NavigationManager.ToAbsoluteUri("/chatHub"))
+                .Build();
 
-        await _hubConnection.StartAsync();
+                _hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
+                {
+                    var encodedMsg = $"{user}: {message}";
+                    _messages.Add(encodedMsg);
+                    StateHasChanged();
+                });
+
+                await _hubConnection.StartAsync();
+            }
+        }
+        catch(Exception e)
+        {
+
+        }
     }
 
-    Task Send() =>
-        _hubConnection.SendAsync("SendMessage", _userInput, _messageInput);
+    private async Task Send() =>
+        await _hubConnection.SendAsync("SendMessage", _userInput, _messageInput);
 
     public bool IsConnected =>
         _hubConnection.State == HubConnectionState.Connected;
