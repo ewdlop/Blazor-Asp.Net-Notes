@@ -130,9 +130,9 @@ namespace BlazorServerApp
                     TermsOfService = new Uri("https://example.com/terms"),
                     Contact = new OpenApiContact
                     {
-                        Name = "Shayne Boyer",
+                        Name = "ewdlop",
                         Email = string.Empty,
-                        Url = new Uri("https://twitter.com/spboyer"),
+                        Url = new Uri("https://example.com/terms"),
                     },
                     License = new OpenApiLicense
                     {
