@@ -38,6 +38,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.2" />
     <PackageReference Include="SendGrid" Version="9.15.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.4.1" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.5.1" />
   </ItemGroup>
 
@@ -47,6 +48,7 @@
     <Folder Include="Areas\Template\Models\" />
     <Folder Include="Areas\Template\Pages\" />
     <Folder Include="Areas\Template\Views\" />
+    <Folder Include="Services\Handlers\" />
   </ItemGroup>
 
 </Project>

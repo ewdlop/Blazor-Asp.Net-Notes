@@ -23,6 +23,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -58,19 +59,16 @@ namespace BlazorServerApp
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddTransient<CustomEmailConfirmationTokenProvider<ApplicationUser>>();
+            services.AddTransient<IEmailSender, EmailSender>();
+            services.Configure<AuthMessageSenderOptions>(Configuration);
 
             services.ConfigureApplicationCookie(o =>
             {
                 o.ExpireTimeSpan = TimeSpan.FromDays(5);
                 o.SlidingExpiration = true;
             });
-            services.AddRazorPages();
-            services.AddServerSideBlazor();
+
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<ApplicationUser>>();
-
-            //One client instance per container
-            services.AddSingleton<ICosmosDbService<MarvelCharactersResult>>(InitializeCosmosClientInstanceAsync<MarvelCharactersResult>(Configuration.GetSection("CosmosDb"), "MarvelCharactersResult").GetAwaiter().GetResult());
-
             services.AddScoped<IGremlinClient, GremlinClient>((serviceProvider) =>
             {
                 var config = serviceProvider.GetRequiredService<IConfiguration>();
@@ -84,11 +82,12 @@ namespace BlazorServerApp
                                     password: PrimaryKey);
                 return new GremlinClient(gremlinServer, new GraphSON2Reader(), new GraphSON2Writer(), GremlinClient.GraphSON2MimeType);
             });
+            services.AddSingleton<ICosmosDbService<MarvelCharactersResult>>(InitializeCosmosClientInstanceAsync<MarvelCharactersResult>(Configuration.GetSection("CosmosDb"), "MarvelCharactersResult").GetAwaiter().GetResult());
             services.AddSingleton<ICosmosDbGremlinService, CosmosDbGremlinService>();
-            services.AddHttpClient();
-            services.AddScoped<AppState>();
             services.AddSingleton<IMarvelCharacterService, MarvelCharacterService>();
-            services.AddSignalR();
+            services.AddScoped<AppState>();
+            services.AddHttpClient();
+            services.AddHttpContextAccessor();
 
             services.AddAuthorization(options =>
             {
@@ -116,15 +115,32 @@ namespace BlazorServerApp
                 };
             });
 
-            services.AddTransient<IEmailSender, EmailSender>();
-            services.Configure<AuthMessageSenderOptions>(Configuration);
-            services.AddHttpContextAccessor();
+            services.AddBlazorise(options => { }).AddBootstrapProviders().AddFontAwesomeIcons();
+            services.AddRazorPages();
+            services.AddServerSideBlazor();
+            services.AddSignalR();
 
-            services
-              .AddBlazorise(options =>
-              {
-              }).AddBootstrapProviders().AddFontAwesomeIcons();
-
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "API",
+                    Description = "A simple example ASP.NET Core Web API",
+                    TermsOfService = new Uri("https://example.com/terms"),
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Shayne Boyer",
+                        Email = string.Empty,
+                        Url = new Uri("https://twitter.com/spboyer"),
+                    },
+                    License = new OpenApiLicense
+                    {
+                        Name = "Use under LICX",
+                        Url = new Uri("https://example.com/license"),
+                    }
+                });
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -143,12 +159,19 @@ namespace BlazorServerApp
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
 
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
 
+            //put custom middleware here before endpoints
+            
             app.ApplicationServices
               .UseBootstrapProviders()
               .UseFontAwesomeIcons();
