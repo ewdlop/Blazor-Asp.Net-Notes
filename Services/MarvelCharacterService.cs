@@ -1,5 +1,6 @@
 ﻿using BlazorServerApp.Models;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -14,12 +15,14 @@ namespace BlazorServerApp.Services
     {
         private readonly IHttpClientFactory _clientFactory;
         private readonly ICosmosDbService<MarvelCharactersResult> _cosmosDbService;
+        private readonly IConfiguration _configuration;
         private IMemoryCache _cache;
-        public MarvelCharacterService(ICosmosDbService<MarvelCharactersResult> cosmosDbService, IMemoryCache cache, IHttpClientFactory ClientFactory)
+        public MarvelCharacterService(ICosmosDbService<MarvelCharactersResult> cosmosDbService, IMemoryCache cache, IHttpClientFactory clientFactory, IConfiguration configuration)
         {
-            _clientFactory = ClientFactory;
+            _clientFactory = clientFactory;
             _cosmosDbService = cosmosDbService;
             _cache = cache;
+            _configuration = configuration;
         }
         public async Task<IEnumerable<MarvelCharactersResult>> GetMarvelCharactersAsync(int i)
         {
@@ -50,8 +53,8 @@ namespace BlazorServerApp.Services
         {
             //https://developer.marvel.com/
             List<MarvelCharactersResult> MarvelCharacters = new List<MarvelCharactersResult>();
-            const string publicKey = "publicKey";
-            const string privateKey = "privateKey";
+            string privateKey = _configuration["MarvelAPIPrivateKey"];
+            string publicKey = _configuration["MarvelAPIPublicKey"];
 
             using (var httpClient = _clientFactory.CreateClient())
             {
