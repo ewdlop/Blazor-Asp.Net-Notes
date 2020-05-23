@@ -82,7 +82,7 @@ namespace BlazorServerApp
                                     password: PrimaryKey);
                 return new GremlinClient(gremlinServer, new GraphSON2Reader(), new GraphSON2Writer(), GremlinClient.GraphSON2MimeType);
             });
-            services.AddSingleton<ICosmosDbService<MarvelCharactersResult>>(InitializeCosmosClientInstanceAsync<MarvelCharactersResult>(Configuration.GetSection("CosmosDb"), "MarvelCharactersResult").GetAwaiter().GetResult());
+            services.AddSingleton<ICosmosDbService<MarvelCharactersResult>>(InitializeCosmosClientInstanceAsync<MarvelCharactersResult>("MarvelCharactersResult").GetAwaiter().GetResult());
             services.AddSingleton<ICosmosDbGremlinService, CosmosDbGremlinService>();
             services.AddSingleton<IMarvelCharacterService, MarvelCharacterService>();
             services.AddScoped<AppState>();
@@ -131,7 +131,7 @@ namespace BlazorServerApp
                     Contact = new OpenApiContact
                     {
                         Name = "ewdlop",
-                        Email = string.Empty,
+                        Email = "ray810815@gmail.com",
                         Url = new Uri("https://example.com/terms"),
                     },
                     License = new OpenApiLicense
@@ -189,15 +189,13 @@ namespace BlazorServerApp
             });
         }
 
-        private async Task<CosmosDbService<T>> InitializeCosmosClientInstanceAsync<T>(IConfigurationSection configurationSection, string containerName)
+        private async Task<CosmosDbService<T>> InitializeCosmosClientInstanceAsync<T>(string containerName)
         {
-            string databaseName = configurationSection.GetSection("DatabaseName").Value;
-            string account = configurationSection.GetSection("Account").Value;
-            string key = configurationSection.GetSection("PrimaryKey").Value;
+            string databaseName = "LocalCosmosDb";
+            string account = Configuration["CosmosDbAccount"];
+            string key = Configuration["CosmosDbPrimaryKey"];
             CosmosClientBuilder clientBuilder = new CosmosClientBuilder(account, key);
-            CosmosClient client = clientBuilder
-                                .WithConnectionModeDirect()
-                                .Build();
+            CosmosClient client = clientBuilder.WithConnectionModeDirect().Build();
             CosmosDbService<T> cosmosDbService = new CosmosDbService<T>(client, databaseName, containerName);
             DatabaseResponse database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
             await database.Database.CreateContainerIfNotExistsAsync(containerName, "/api_id");
