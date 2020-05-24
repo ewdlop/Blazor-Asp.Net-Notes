@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace BlazorServerApp.Migrations.LocalApplicationDb
+namespace BlazorServerApp.Migrations
 {
-    public partial class AddCustomerMembeShip : Migration
+    public partial class CustomerMemberShip : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -47,11 +47,37 @@ namespace BlazorServerApp.Migrations.LocalApplicationDb
                 });
 
             migrationBuilder.CreateTable(
+                name: "Customer",
+                columns: table => new
+                {
+                    FirstName = table.Column<string>(maxLength: 50, nullable: false),
+                    LastName = table.Column<string>(maxLength: 50, nullable: false),
+                    EmailAddress = table.Column<string>(maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Customer", x => new { x.FirstName, x.LastName, x.EmailAddress });
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Membership",
+                columns: table => new
+                {
+                    Id = table.Column<string>(maxLength: 32, nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(25)", nullable: false),
+                    Fee = table.Column<decimal>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Membership", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     RoleId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -72,7 +98,7 @@ namespace BlazorServerApp.Migrations.LocalApplicationDb
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -152,6 +178,31 @@ namespace BlazorServerApp.Migrations.LocalApplicationDb
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "CustomerMembership",
+                columns: table => new
+                {
+                    FirstName = table.Column<string>(maxLength: 50, nullable: false),
+                    LastName = table.Column<string>(maxLength: 50, nullable: false),
+                    EmailAddress = table.Column<string>(maxLength: 50, nullable: false),
+                    MembershipId = table.Column<string>(maxLength: 32, nullable: false),
+                    MemberSince = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CustomerMembership", x => new { x.FirstName, x.LastName, x.EmailAddress, x.MembershipId });
+                    table.ForeignKey(
+                        name: "FK_CustomerMembership_Membership_MembershipId",
+                        column: x => x.MembershipId,
+                        principalTable: "Membership",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_CustomerMembership_Customer_FirstName_LastName_EmailAddress",
+                        columns: x => new { x.FirstName, x.LastName, x.EmailAddress },
+                        principalTable: "Customer",
+                        principalColumns: new[] { "FirstName", "LastName", "EmailAddress" });
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -161,7 +212,8 @@ namespace BlazorServerApp.Migrations.LocalApplicationDb
                 name: "RoleNameIndex",
                 table: "AspNetRoles",
                 column: "NormalizedName",
-                unique: true);
+                unique: true,
+                filter: "[NormalizedName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
@@ -187,7 +239,13 @@ namespace BlazorServerApp.Migrations.LocalApplicationDb
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
-                unique: true);
+                unique: true,
+                filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CustomerMembership_MembershipId",
+                table: "CustomerMembership",
+                column: "MembershipId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -208,10 +266,19 @@ namespace BlazorServerApp.Migrations.LocalApplicationDb
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "CustomerMembership");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Membership");
+
+            migrationBuilder.DropTable(
+                name: "Customer");
         }
     }
 }

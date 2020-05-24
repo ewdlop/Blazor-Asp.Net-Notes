@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazorServerApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200524055841_AddCustomerMembeShip")]
-    partial class AddCustomerMembeShip
+    [Migration("20200524171641_CustomerMemberShip")]
+    partial class CustomerMemberShip
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -89,32 +89,39 @@ namespace BlazorServerApp.Migrations
             modelBuilder.Entity("BlazorServerApp.Models.EF.NautralKey.Customer", b =>
                 {
                     b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<string>("EmailAddress")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.HasKey("FirstName", "LastName", "EmailAddress");
 
                     b.ToTable("Customer");
                 });
 
-            modelBuilder.Entity("BlazorServerApp.Models.EF.NautralKey.CustomerMemberShip", b =>
+            modelBuilder.Entity("BlazorServerApp.Models.EF.NautralKey.CustomerMembership", b =>
                 {
                     b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<string>("EmailAddress")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<string>("MembershipId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(32)")
+                        .HasMaxLength(32);
 
                     b.Property<DateTime>("MemberSince")
                         .HasColumnType("datetime2");
@@ -123,16 +130,17 @@ namespace BlazorServerApp.Migrations
 
                     b.HasIndex("MembershipId");
 
-                    b.ToTable("CustomeMemberShip");
+                    b.ToTable("CustomerMembership");
                 });
 
             modelBuilder.Entity("BlazorServerApp.Models.EF.NautralKey.Membership", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(32)")
+                        .HasMaxLength(32);
 
-                    b.Property<double>("Fee")
-                        .HasColumnType("float");
+                    b.Property<decimal>("Fee")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Type")
                         .IsRequired()
@@ -278,18 +286,18 @@ namespace BlazorServerApp.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("BlazorServerApp.Models.EF.NautralKey.CustomerMemberShip", b =>
+            modelBuilder.Entity("BlazorServerApp.Models.EF.NautralKey.CustomerMembership", b =>
                 {
                     b.HasOne("BlazorServerApp.Models.EF.NautralKey.Membership", "Membership")
                         .WithMany("OwnedByMembers")
                         .HasForeignKey("MembershipId")
-                        .OnDelete(DeleteBehavior.SetNull)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("BlazorServerApp.Models.EF.NautralKey.Customer", "Customer")
                         .WithMany("CustomerMemberShips")
                         .HasForeignKey("FirstName", "LastName", "EmailAddress")
-                        .OnDelete(DeleteBehavior.SetNull)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 

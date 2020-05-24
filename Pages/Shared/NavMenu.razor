@@ -76,6 +76,7 @@
         {
 
         }
+        await _hubConnection.SendAsync("UserConnected");
     }
 
     private async Task Send() =>

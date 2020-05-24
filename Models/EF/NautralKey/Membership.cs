@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,11 +14,16 @@ namespace BlazorServerApp.Models.EF.NautralKey
         platinum,
         Silver
     }
-    public class Membership {
+    [Table("Membership")]
+    public class Membership 
+    {
+        [StringLength(32)]
         public string Id { get; set; }
         [Column(TypeName = "nvarchar(25)")]
         public MemberShipType Type { get; set; }
-        public double Fee { get; set; }
-        public ICollection<CustomerMemberShip> OwnedByMembers { get; set; }
+        [Required]
+        [Range(0, 9999.99)]
+        public decimal Fee { get; set; }
+        public ICollection<CustomerMembership> OwnedByMembers { get; set; }
     }
 }

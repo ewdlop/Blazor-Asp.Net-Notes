@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazorServerApp.Migrations.LocalApplicationDb
 {
     [DbContext(typeof(LocalApplicationDbContext))]
-    [Migration("20200524055951_AddCustomerMembeShip")]
-    partial class AddCustomerMembeShip
+    [Migration("20200524171727_CustomerMemberShip")]
+    partial class CustomerMemberShip
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -23,25 +23,26 @@ namespace BlazorServerApp.Data
             builder.Entity<Customer>().HasKey(c => new { c.FirstName, c.LastName, c.EmailAddress });
             builder.Entity<Membership>().HasKey(m => m.Id);
             builder.Entity<Membership>()
-                .Property(o => o.Type)
+                .Property(m => m.Type)
                 .HasConversion<string>();
-            builder.Entity<CustomerMemberShip>()
+
+            builder.Entity<CustomerMembership>()
                 .HasKey(c => new { c.FirstName, c.LastName, c.EmailAddress, c.MembershipId });
-            builder.Entity<CustomerMemberShip>()
+            builder.Entity<CustomerMembership>()
                 .HasOne(c => c.Customer)
                 .WithMany(c => c.CustomerMemberShips)
                 .HasForeignKey(c => new { c.FirstName, c.LastName, c.EmailAddress })
-                .OnDelete(DeleteBehavior.SetNull);
-            builder.Entity<CustomerMemberShip>()
+                .OnDelete(DeleteBehavior.NoAction);
+            builder.Entity<CustomerMembership>()
                 .HasOne(c => c.Membership)
                 .WithMany(m => m.OwnedByMembers)
                 .HasForeignKey(c => new { c.MembershipId })
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.NoAction);
         }
 
         public DbSet<Customer> Customer { get; set; }
         public DbSet<Membership> Membership { get; set; }
-        public DbSet<CustomerMemberShip> CustomeMemberShip { get; set; }
+        public DbSet<CustomerMembership> CustomeMemberShip { get; set; }
 
     }
 }
