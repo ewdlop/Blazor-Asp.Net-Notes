@@ -42,10 +42,12 @@ namespace BlazorServerApp
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
+            services.AddDbContext<LocalApplicationDbContext>(options =>
                 options.UseSqlite(
+                    Configuration.GetConnectionString("DefaultSQLiteConnection")));
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-
             services.AddDefaultIdentity<ApplicationUser>(
                 options =>
                 {

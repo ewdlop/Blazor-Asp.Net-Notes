@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace BlazorServerApp.Data.Migrations
+namespace BlazorServerApp.Migrations.LocalApplicationDb
 {
-    public partial class CreateIdentitySchema : Migration
+    public partial class AddCustomerMembeShip : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

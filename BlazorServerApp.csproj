@@ -6,15 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Data\Migrations\20200507055332_ApplicationUser.cs" />
-    <Compile Remove="Data\Migrations\20200507055332_ApplicationUser.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200507055732_ApplicationUser.cs" />
-    <Compile Remove="Data\Migrations\20200507055732_ApplicationUser.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200507060536_ApplicationUser.cs" />
-    <Compile Remove="Data\Migrations\20200507060536_ApplicationUser.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="app.db" CopyToOutputDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
   </ItemGroup>
 
@@ -35,7 +26,10 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Cosmos" Version="3.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.4" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.2" />
@@ -45,11 +39,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Template\Controllers\" />
-    <Folder Include="Areas\Template\Data\" />
-    <Folder Include="Areas\Template\Models\" />
-    <Folder Include="Areas\Template\Pages\" />
-    <Folder Include="Areas\Template\Views\" />
+    <Folder Include="Models\EF\Surrogate  Key\" />
+    <Folder Include="Models\API\" />
     <Folder Include="Services\Handlers\" />
   </ItemGroup>
 

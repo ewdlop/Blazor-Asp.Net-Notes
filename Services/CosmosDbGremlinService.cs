@@ -17,14 +17,14 @@ namespace BlazorServerApp.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task SubmitQuery(string test)
+        public async Task SubmitQuery(string query)
         {
             try
             {
                 using (var _gremlinClient = _httpContextAccessor.HttpContext.RequestServices.GetRequiredService<IGremlinClient>())
                 {
                     //Blazor componenet has problem getting this method for some reason
-                    await _gremlinClient.SubmitAsync<dynamic>(test);
+                    await _gremlinClient.SubmitAsync<dynamic>(query);
                 }
             }
             catch(Exception)
