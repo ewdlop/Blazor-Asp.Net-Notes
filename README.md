@@ -4,4 +4,4 @@ Consume Rest API(Marvel API https://developer.marvel.com/),<br />
 Entity Framework Core(Natural Key, Fluent API),<br />
 Hosting Rest API(JWT Token Authenication, Swagger UI), Blazorise, Azure KeyVault, SendGrid(Email),<br />
 Blazorise: https://github.com/stsrki/Blazorise, <br />,
-And React(using Javascript Interop and ReactDOM)
+and React(using Javascript Interop and ReactDOM)
