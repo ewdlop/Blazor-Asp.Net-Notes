@@ -7,4 +7,4 @@ Consume Marvel Rest API(Marvel API https://developer.marvel.com/),<br />
 Entity Framework Core(Natural Key, Fluent API),<br />
 Hosting a Rest API(JWT Token Authenication, Swagger UI),<br />
 Blazorise: https://github.com/stsrki/Blazorise, <br />
-and React(using Javascript Interop and ReactDOM)
+and React(using Javascript Interop and ReactDOM): https://github.com/hassanhabib/blazorxreact
