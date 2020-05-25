@@ -3,8 +3,10 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject UserManager<ApplicationUser> UserManager
 @inject IConfiguration Configuration
+@inject IJSRuntime IJSRuntime
 
 <button class="btn btn-primary" @onclick=@Authenticate>Generate API Token</button>
+<button class="btn btn-light" @onclick=@InvokeJS>Invoke React Componenet Rendering</button>
 <Modal @ref="TokenModalRef">
     <ModalBackdrop />
     <ModalContent IsCentered="true">
@@ -30,7 +32,7 @@
         </ModalFooter>
     </ModalContent>
 </Modal>
-
+<div id="React"></div>
 @code{
 
     private string _token;
@@ -80,5 +82,9 @@
 
     private void HideTokenModal() {
         TokenModalRef.Hide();
+    }
+
+    private async Task InvokeJS() {
+        await IJSRuntime.InvokeVoidAsync("RenderReact");
     }
 }
