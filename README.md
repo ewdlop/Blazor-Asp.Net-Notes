@@ -1,5 +1,6 @@
 # Blazor Server App
-My major foucs for this side project is tooling, learning, and experimenting. It includes the basic usage of Blazor Components, SignalR, Authorization Policy, Identity Claims,Azure Key Vault(for storing secret), SendGrid(Email),<br /> 
+My major foucs for this side project is tooling, learning, and experimenting. It includes the basic usage of:<br/>
+Blazor Components, SignalR, Authorization Policy, Identity Claims,Azure Key Vault(for storing secret), SendGrid(Email),<br /> 
 Azure CosomosDB DocumentDB(Json): https://docs.microsoft.com/en-us/azure/cosmos-db/introduction,<br />
 Azure CosomosDB Gremlin(Graph Database): https://tinkerpop.apache.org/docs/current/reference/#gremlin-DotNet,<br />
 Consume Marvel Rest API(Marvel API https://developer.marvel.com/),<br />
