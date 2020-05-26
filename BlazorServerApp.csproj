@@ -12,8 +12,6 @@
     <Compile Remove="Migrations\20200524163031_CustomerMembership.Designer.cs" />
     <Compile Remove="Migrations\20200524170215_CustomerMemberShip.cs" />
     <Compile Remove="Migrations\20200524170215_CustomerMemberShip.Designer.cs" />
-    <Compile Remove="Migrations\LocalApplicationDb\20200524055951_AddCustomerMembeShip.cs" />
-    <Compile Remove="Migrations\LocalApplicationDb\20200524055951_AddCustomerMembeShip.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

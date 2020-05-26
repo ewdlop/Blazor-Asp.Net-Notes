@@ -42,9 +42,11 @@ namespace BlazorServerApp
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<LocalApplicationDbContext>(options =>
-                options.UseSqlite(
-                    Configuration.GetConnectionString("DefaultSQLiteConnection")));
+            //test
+            //services.AddDbContext<LocalApplicationDbContext>(options =>
+            //    options.UseSqlite(
+            //        Configuration.GetConnectionString("DefaultSQLiteConnection")));
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
@@ -74,13 +76,13 @@ namespace BlazorServerApp
             services.AddScoped<IGremlinClient, GremlinClient>((serviceProvider) =>
             {
                 var config = serviceProvider.GetRequiredService<IConfiguration>();
-                string EndpointUrl = config.GetSection("CosmosDbGreminlin").GetSection("Endpoint").Value;
-                string PrimaryKey = config.GetSection("CosmosDbGreminlin").GetSection("PrimaryKey").Value;
+                string EndpointUrl = config["CosmosDbGremlinEndpoint"];
+                string PrimaryKey = config["CosmosDbGremlinPrimaryKey"];
                 const int port = 443;
-                string database = config.GetSection("CosmosDbGreminlin").GetSection("DatabaseName").Value;
-                string container = config.GetSection("CosmosDbGreminlin").GetSection("ContainerName").Value;
+                string database = "SampleGraphDb";
+                string graph = "SampleGraph";
                 GremlinServer gremlinServer = new GremlinServer(EndpointUrl, port, enableSsl: true,
-                                    username: "/dbs/" + database + "/colls/" + container,
+                                    username: "/dbs/" + database + "/colls/" + graph,
                                     password: PrimaryKey);
                 return new GremlinClient(gremlinServer, new GraphSON2Reader(), new GraphSON2Writer(), GremlinClient.GraphSON2MimeType);
             });
@@ -110,7 +112,7 @@ namespace BlazorServerApp
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetSection("JWToken").GetSection("Key").Value)),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["JWTokenKey"])),
                     ValidateLifetime = true,
                     ValidateAudience = false,
                     ValidateIssuer = false
@@ -193,7 +195,7 @@ namespace BlazorServerApp
 
         private async Task<CosmosDbService<T>> InitializeCosmosClientInstanceAsync<T>(string containerName)
         {
-            string databaseName = "LocalCosmosDb";
+            string databaseName = "AzureCosmosDbDocumentDb";
             string account = Configuration["CosmosDbAccount"];
             string key = Configuration["CosmosDbPrimaryKey"];
             CosmosClientBuilder clientBuilder = new CosmosClientBuilder(account, key);

@@ -46,7 +46,7 @@
             if (authenticatedUser.Identity.IsAuthenticated) {
                 var user = await UserManager.GetUserAsync(authenticatedUser);
                 var tokenHandler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
-                var key = Encoding.ASCII.GetBytes(Configuration.GetSection("JWToken").GetSection("Key").Value);
+                var key = Encoding.ASCII.GetBytes(Configuration["JWTokenKey"]);
                 var tokenDescriptor = new System.IdentityModel.Tokens.Jwt.JwtSecurityToken(
                     claims: new[]
                     {

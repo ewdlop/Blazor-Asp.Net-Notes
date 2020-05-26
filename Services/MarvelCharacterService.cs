@@ -70,9 +70,9 @@ namespace BlazorServerApp.Services
                     sb.Append(hash[i].ToString("x2"));
                 }
                 string hashString = sb.ToString();
-                //500
-                const int limit = 50;
-                const int offset = 50;
+                //100
+                const int limit = 100;
+                const int offset = 119;
                 string url = $"https://gateway.marvel.com:443/v1/public/characters?limit={limit}&offset={offset}&ts={timestamp}&apikey={publicKey}&hash={hashString}";
                 using (var response = await httpClient.GetAsync(url))
                 {
