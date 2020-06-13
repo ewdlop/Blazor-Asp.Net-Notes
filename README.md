@@ -3,7 +3,7 @@
 Profile: https://dev.azure.com/ray810815/Blazor%20Server%20App <br/>
 DevOps Dashboard: https://dev.azure.com/ray810815/Blazor%20Server%20App/_dashboards/dashboard/8e6a01e2-c4df-4413-bee7-aa1c4e7362af/
 ## Purpose
-The main purpose of this side project is to learn and experimenting with tools/features offer by .Net core Community and Azure Cloud. The project includes the basic usage of:<br/>
+The main purpose of this side project is learning and experimenting with tools/features offered by .Net Core Community and Azure Cloud. The project includes the basic usage of:<br/>
 Blazor Components, SignalR, Authorization Policy, Identity Claims,Azure Key Vault(for storing secret), SendGrid(Email),<br /> 
 Azure CosomosDB DocumentDB(Json): https://docs.microsoft.com/en-us/azure/cosmos-db/introduction,<br />
 Azure CosomosDB Gremlin(Graph Database): https://tinkerpop.apache.org/docs/current/reference/#gremlin-DotNet,<br />
