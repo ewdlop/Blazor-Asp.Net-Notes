@@ -8,3 +8,4 @@ Entity Framework Core(Natural Key, Fluent API),<br />
 Hosting a Rest API(JWT Token Authenication, Swagger UI),<br />
 Blazorise: https://github.com/stsrki/Blazorise, <br />
 and React(using Javascript Interop and ReactDOM): https://github.com/hassanhabib/blazorxreact
+Azure Devops Service Profile: https://dev.azure.com/ray810815/Blazor%20Server%20App
