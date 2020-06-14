@@ -1,3 +1,4 @@
+![.NET Core](https://github.com/ewdlop/Blazor-Server-App/workflows/.NET%20Core/badge.svg)
 # Blazor Server App
 ## Azure DevOps Service
 Profile: https://dev.azure.com/ray810815/Blazor%20Server%20App <br/>
