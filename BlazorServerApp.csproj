@@ -7,9 +7,13 @@
 
   <ItemGroup>
     <Compile Remove="BlazorServerApp.Test\**" />
+    <Compile Remove="BlazorServerApp.xUnitTests\**" />
     <Content Remove="BlazorServerApp.Test\**" />
+    <Content Remove="BlazorServerApp.xUnitTests\**" />
     <EmbeddedResource Remove="BlazorServerApp.Test\**" />
+    <EmbeddedResource Remove="BlazorServerApp.xUnitTests\**" />
     <None Remove="BlazorServerApp.Test\**" />
+    <None Remove="BlazorServerApp.xUnitTests\**" />
   </ItemGroup>
 
   <ItemGroup>
