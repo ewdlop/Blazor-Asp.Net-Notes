@@ -1,9 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>aspnet-BlazorServerApp-43983CEF-AAA9-409B-842A-F6A5A1C9CDE7</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="BlazorServerApp.Test\**" />
+    <Content Remove="BlazorServerApp.Test\**" />
+    <EmbeddedResource Remove="BlazorServerApp.Test\**" />
+    <None Remove="BlazorServerApp.Test\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="Migrations\20200524055841_AddCustomerMembeShip.cs" />
@@ -45,6 +52,7 @@
     <PackageReference Include="SendGrid" Version="9.15.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.4.1" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.5.1" />
+    <PackageReference Include="xunit" Version="2.4.1" />
   </ItemGroup>
 
   <ItemGroup>
