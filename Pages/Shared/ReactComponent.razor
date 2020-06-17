@@ -1,0 +1,12 @@
+﻿@page "/reactComponent"
+@inject IJSRuntime IJSRuntime
+
+<div>Please refresh this page before trying out the React Rendering button(due to react.js script conflict between the one bundled in webchat.js and the one imported directly from unpkg.com)</div>
+<Button Color="Color.Light" @onclick=@InvokeJS>Invoke React Componenet Rendering</Button>
+<div id="React"></div>
+
+@code {
+    private async Task InvokeJS() {
+        await IJSRuntime.InvokeVoidAsync("RenderReact");
+    }
+}
