@@ -1,0 +1,53 @@
+﻿@page "/webchat"
+@inject IJSRuntime IJSRuntime
+@inject IConfiguration IConfiguration
+@inject IHttpClientFactory IHttpClientFactory
+<style>
+    html,
+    body {
+        height: 100%;
+    }
+
+    body {
+        margin: 0;
+    }
+
+    #webchat {
+        height: 100%;
+        width: 100%;
+    }
+</style>
+<h2>BotFramework-WebChat</h2>
+<div>Please use the reload to refresh this page if the WebChat cannot be seen(due to react.js script conflict between the one bundled in webchat.js and the one imported directly from unpkg.com)</div>
+@*<Button Color="Color.Primary" Clicked="@RenderWebChat">WebChat</Button>*@
+<hr />
+<div id="webchat" role="main"></div>
+
+@code {
+    private string _userId;
+    protected override async Task OnAfterRenderAsync(bool firstRender) {
+        if(firstRender) {
+            using (var client = IHttpClientFactory.CreateClient()) {
+                HttpRequestMessage request = new HttpRequestMessage(
+                  HttpMethod.Post,
+                  $"https://directline.botframework.com/v3/directline/tokens/generate");
+                request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", IConfiguration["BotFrameworkDirectLineSecret"]);
+                _userId = $"dl_{Guid.NewGuid()}";
+                request.Content = new StringContent(
+                JsonConvert.SerializeObject(
+                    new { User = new { Id = _userId } }),
+                    Encoding.UTF8,
+                    "application/json");
+                var response = await client.SendAsync(request);
+                string token = String.Empty;
+
+                if (response.IsSuccessStatusCode) {
+                    var body = await response.Content.ReadAsStringAsync();
+                    token = JsonConvert.DeserializeObject<DirectLineToken>(body).token;
+                    //var conversationId = JsonConvert.DeserializeObject<DirectLineToken>(body).conversationId;
+                    await IJSRuntime.InvokeVoidAsync("RenderWebChat", _userId, token);
+                }
+            }
+        }
+    }
+}

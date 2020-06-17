@@ -3,10 +3,8 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject UserManager<ApplicationUser> UserManager
 @inject IConfiguration Configuration
-@inject IJSRuntime IJSRuntime
 
-<button class="btn btn-primary" @onclick=@Authenticate>Generate API Token</button>
-<button class="btn btn-light" @onclick=@InvokeJS>Invoke React Componenet Rendering</button>
+<Button Color="Color.Primary" @onclick=@Authenticate>Generate API Token</Button>
 <Modal @ref="TokenModalRef">
     <ModalBackdrop />
     <ModalContent IsCentered="true">
@@ -32,7 +30,6 @@
         </ModalFooter>
     </ModalContent>
 </Modal>
-<div id="React"></div>
 @code{
 
     private string _token;
@@ -51,8 +48,6 @@
                     claims: new[]
                     {
                         //new Claim(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.UniqueName,user.UserName ),
-                        //Raymond: I beleive this was desgin for SOAP for XML, and not for Jwt(Json web Token)
-                        //But we need this for the Role
                         new Claim(ClaimTypes.Name,user.UserName)
                                                 },
                     expires: DateTime.UtcNow.AddMinutes(10),
@@ -82,9 +77,5 @@
 
     private void HideTokenModal() {
         TokenModalRef.Hide();
-    }
-
-    private async Task InvokeJS() {
-        await IJSRuntime.InvokeVoidAsync("RenderReact");
     }
 }

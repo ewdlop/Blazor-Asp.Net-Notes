@@ -86,7 +86,7 @@ namespace BlazorServerApp
                                     password: PrimaryKey);
                 return new GremlinClient(gremlinServer, new GraphSON2Reader(), new GraphSON2Writer(), GremlinClient.GraphSON2MimeType);
             });
-            services.AddSingleton<ICosmosDbService<MarvelCharactersResult>>(InitializeCosmosClientInstanceAsync<MarvelCharactersResult>("MarvelCharactersResult").GetAwaiter().GetResult());
+            services.AddSingleton<ICosmosDbService<MarvelCharactersResult>>(InitializeCosmosClientInstanceAsync<MarvelCharactersResult>("MarvelCharactersResult", "/api_id").GetAwaiter().GetResult());
             services.AddSingleton<ICosmosDbGremlinService, CosmosDbGremlinService>();
             services.AddSingleton<IMarvelCharacterService, MarvelCharacterService>();
             services.AddScoped<AppState>();
@@ -193,7 +193,7 @@ namespace BlazorServerApp
             });
         }
 
-        private async Task<CosmosDbService<T>> InitializeCosmosClientInstanceAsync<T>(string containerName)
+        private async Task<CosmosDbService<T>> InitializeCosmosClientInstanceAsync<T>(string containerName, string partitionKey)
         {
             string databaseName = "AzureCosmosDbDocumentDb";
             string account = Configuration["CosmosDbAccount"];
@@ -202,7 +202,7 @@ namespace BlazorServerApp
             CosmosClient client = clientBuilder.WithConnectionModeDirect().Build();
             CosmosDbService<T> cosmosDbService = new CosmosDbService<T>(client, databaseName, containerName);
             DatabaseResponse database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
-            await database.Database.CreateContainerIfNotExistsAsync(containerName, "/api_id");
+            await database.Database.CreateContainerIfNotExistsAsync(containerName, partitionKey);
 
             return cosmosDbService;
         }
