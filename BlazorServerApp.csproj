@@ -43,6 +43,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.ProtectedBrowserStorage" Version="0.1.0-alpha.19521.1" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="3.1.2" />
+    <PackageReference Include="Microsoft.Bot.Builder.Ai.QnA" Version="4.9.3" />
+    <PackageReference Include="Microsoft.Bot.Builder.Integration.AspNet.Core" Version="4.9.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Cosmos" Version="3.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0" />
@@ -62,7 +64,6 @@
   <ItemGroup>
     <Folder Include="Models\EF\Surrogate  Key\" />
     <Folder Include="Models\API\" />
-    <Folder Include="Services\Handlers\" />
   </ItemGroup>
 
   <ItemGroup>

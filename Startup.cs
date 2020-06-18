@@ -1,10 +1,11 @@
-using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
+using Blazorise;
 using BlazorServerApp.Areas.Identity.Data;
 using BlazorServerApp.Areas.Identity;
 using BlazorServerApp.Data;
 using BlazorServerApp.Models;
+using BlazorServerApp.Services.Handlers;
 using BlazorServerApp.Services.Options;
 using BlazorServerApp.Services.Providers;
 using BlazorServerApp.Services;
@@ -18,6 +19,11 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.Azure.Cosmos;
+using Microsoft.Bot.Builder.AI.QnA;
+using Microsoft.Bot.Builder.BotFramework;
+using Microsoft.Bot.Builder.Integration.AspNet.Core;
+using Microsoft.Bot.Builder;
+using Microsoft.Bot.Connector.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -86,6 +92,10 @@ namespace BlazorServerApp
                                     password: PrimaryKey);
                 return new GremlinClient(gremlinServer, new GraphSON2Reader(), new GraphSON2Writer(), GremlinClient.GraphSON2MimeType);
             });
+            services.AddSingleton<ICredentialProvider, ConfigurationCredentialProvider>();
+            services.AddSingleton<IBotFrameworkHttpAdapter, AdapterWithErrorHandler>();
+            services.AddTransient<IBot, QnABot>();
+
             services.AddSingleton<ICosmosDbService<MarvelCharactersResult>>(InitializeCosmosClientInstanceAsync<MarvelCharactersResult>("MarvelCharactersResult", "/api_id").GetAwaiter().GetResult());
             services.AddSingleton<ICosmosDbGremlinService, CosmosDbGremlinService>();
             services.AddSingleton<IMarvelCharacterService, MarvelCharacterService>();
