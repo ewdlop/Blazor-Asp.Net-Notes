@@ -14,6 +14,7 @@ Entity Framework Core(Natural Key,Surrogate Key, and Fluent API),<br />
 Hosting a Rest API using API Controller(JWT Token Authentication, Swagger UI),<br />
 Blazorise: https://github.com/stsrki/Blazorise, <br />
 BotFramework-WebChat: https://github.com/Microsoft/BotFramework-WebChat <br />
+QnAMaker Bot:https://github.com/microsoft/BotBuilder-Samples/tree/master/samples/csharp_dotnetcore/11.qnamaker <br />
 and React(using Javascript Interop and ReactDOM): https://github.com/hassanhabib/blazorxreact <br/>
 
 ## Link
