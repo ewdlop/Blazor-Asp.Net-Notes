@@ -17,8 +17,8 @@ namespace BlazorServerApp.Models.EF.NautralKey
     [Table("Membership")]
     public class Membership 
     {
-        [StringLength(32)]
-        public string Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid Id { get; set; }
         [Column(TypeName = "nvarchar(25)")]
         public MemberShipType Type { get; set; }
         [Required]

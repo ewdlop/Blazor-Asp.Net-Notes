@@ -16,8 +16,7 @@ namespace BlazorServerApp.Models.EF.NautralKey
         public string LastName { get; set; }
         [StringLength(50)]
         public string EmailAddress { get; set; }
-        [StringLength(32)]
-        public string MembershipId { get; set; }
+        public Guid MembershipId { get; set; }
         public DateTime MemberSince { get; set; }
         public Customer Customer { get; set; }
         public Membership Membership { get; set; }

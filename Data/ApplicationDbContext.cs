@@ -28,11 +28,13 @@ namespace BlazorServerApp.Data
 
             builder.Entity<CustomerMembership>()
                 .HasKey(c => new { c.FirstName, c.LastName, c.EmailAddress, c.MembershipId });
+
             builder.Entity<CustomerMembership>()
                 .HasOne(c => c.Customer)
                 .WithMany(c => c.CustomerMemberShips)
                 .HasForeignKey(c => new { c.FirstName, c.LastName, c.EmailAddress })
                 .OnDelete(DeleteBehavior.NoAction);
+
             builder.Entity<CustomerMembership>()
                 .HasOne(c => c.Membership)
                 .WithMany(m => m.OwnedByMembers)

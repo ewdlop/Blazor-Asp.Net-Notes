@@ -4,14 +4,16 @@ using BlazorServerApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BlazorServerApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200702164335_ChangeMemberShipKeyType")]
+    partial class ChangeMemberShipKeyType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,70 +84,6 @@ namespace BlazorServerApp.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("BlazorServerApp.Models.EF.NautralKey.Customer", b =>
-                {
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("EmailAddress")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.HasKey("FirstName", "LastName", "EmailAddress");
-
-                    b.ToTable("Customer");
-                });
-
-            modelBuilder.Entity("BlazorServerApp.Models.EF.NautralKey.CustomerMembership", b =>
-                {
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("EmailAddress")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<Guid>("MembershipId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("MemberSince")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("FirstName", "LastName", "EmailAddress", "MembershipId");
-
-                    b.HasIndex("MembershipId");
-
-                    b.ToTable("CustomerMembership");
-                });
-
-            modelBuilder.Entity("BlazorServerApp.Models.EF.NautralKey.Membership", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("Fee")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(25)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Membership");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -281,21 +219,6 @@ namespace BlazorServerApp.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("BlazorServerApp.Models.EF.NautralKey.CustomerMembership", b =>
-                {
-                    b.HasOne("BlazorServerApp.Models.EF.NautralKey.Membership", "Membership")
-                        .WithMany("OwnedByMembers")
-                        .HasForeignKey("MembershipId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("BlazorServerApp.Models.EF.NautralKey.Customer", "Customer")
-                        .WithMany("CustomerMemberShips")
-                        .HasForeignKey("FirstName", "LastName", "EmailAddress")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
