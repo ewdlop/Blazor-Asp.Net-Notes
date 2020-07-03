@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BlazorServerApp.Models.EF.SurrogateKey
 {
-    public class Owner
+    public class PetOwner
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

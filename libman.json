@@ -5,6 +5,10 @@
     {
       "library": "three.js@r99",
       "destination": "wwwroot/three.js/"
+    },
+    {
+      "library": "swagger-ui@3.28.0",
+      "destination": "wwwroot/swagger-ui/"
     }
   ]
 }

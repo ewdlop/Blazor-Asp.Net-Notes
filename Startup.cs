@@ -17,6 +17,8 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Bot.Builder.AI.QnA;
@@ -28,8 +30,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -129,10 +133,12 @@ namespace BlazorServerApp
                 };
             });
 
-            services.AddBlazorise(options => { }).AddBootstrapProviders().AddFontAwesomeIcons();
+            services.AddBlazorise(blazoriseOptions => { }).AddBootstrapProviders().AddFontAwesomeIcons();
             services.AddRazorPages();
+            services.AddControllersWithViews(options => options.InputFormatters.Insert(0, GetJsonPatchInputFormatter()));
             services.AddServerSideBlazor();
             services.AddSignalR();
+
 
             services.AddSwaggerGen(c =>
             {
@@ -216,6 +222,15 @@ namespace BlazorServerApp
 
             return cosmosDbService;
         }
-    }
 
+        private static NewtonsoftJsonPatchInputFormatter GetJsonPatchInputFormatter() {
+            var builder = new ServiceCollection()
+                .AddLogging().AddControllersWithViews()
+                .AddNewtonsoftJson().Services.BuildServiceProvider();
+
+            return builder
+                .GetRequiredService<IOptions<MvcOptions>>().Value.InputFormatters
+                .OfType<NewtonsoftJsonPatchInputFormatter>().First();
+        }
+    }
 }

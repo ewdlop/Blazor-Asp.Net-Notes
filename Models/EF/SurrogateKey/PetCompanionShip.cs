@@ -9,7 +9,7 @@ namespace BlazorServerApp.Models.EF.SurrogateKey
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
-        public Owner Owner { get; set; }
+        public PetOwner Owner { get; set; }
         public Guid OwnerId { get; set; }
         public Pet Pet { get; set; }
         public Guid PetId { get; set; }

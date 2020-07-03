@@ -84,6 +84,75 @@ namespace BlazorServerApp.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("BlazorServerApp.Models.API.RPG.Location", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Locations");
+                });
+
+            modelBuilder.Entity("BlazorServerApp.Models.API.RPG.Monster", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AttackType")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(15)")
+                        .HasDefaultValue("Melee");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
+
+                    b.Property<string>("Rarity")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(15)")
+                        .HasDefaultValue("Normal");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(25)")
+                        .HasDefaultValue("Creature");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Monsters");
+                });
+
+            modelBuilder.Entity("BlazorServerApp.Models.API.RPG.MonsterResidency", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LocationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MonsterId")
+                        .HasColumnType("int");
+
+                    b.Property<float>("RespawnTime")
+                        .HasColumnType("real");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LocationId");
+
+                    b.HasIndex("MonsterId");
+
+                    b.ToTable("MonsterResidencies");
+                });
+
             modelBuilder.Entity("BlazorServerApp.Models.EF.NautralKey.Customer", b =>
                 {
                     b.Property<string>("FirstName")
@@ -141,7 +210,9 @@ namespace BlazorServerApp.Migrations
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasColumnType("nvarchar(25)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(25)")
+                        .HasDefaultValue("Free");
 
                     b.HasKey("Id");
 
@@ -281,6 +352,21 @@ namespace BlazorServerApp.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("BlazorServerApp.Models.API.RPG.MonsterResidency", b =>
+                {
+                    b.HasOne("BlazorServerApp.Models.API.RPG.Location", "Location")
+                        .WithMany("Monsters")
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BlazorServerApp.Models.API.RPG.Monster", "Monster")
+                        .WithMany("SpawnLocations")
+                        .HasForeignKey("MonsterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("BlazorServerApp.Models.EF.NautralKey.CustomerMembership", b =>
