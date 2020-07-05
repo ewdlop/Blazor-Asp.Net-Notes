@@ -3,11 +3,11 @@ using Xunit;
 
 namespace BlazorServerApp.Test
 {
-    public class PrimeService_IsPrimeShould
+    public class PrimeServiceTest
     {
-        private readonly PrimeService _primeService;
+        private readonly IPrimeService _primeService;
 
-        public PrimeService_IsPrimeShould() {
+        public PrimeServiceTest() {
             _primeService = new PrimeService();
         }
 

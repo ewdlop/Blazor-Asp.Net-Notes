@@ -6,12 +6,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="BlazorServerApp.FunctionApp\**" />
     <Compile Remove="BlazorServerApp.Test\**" />
     <Compile Remove="BlazorServerApp.xUnitTests\**" />
+    <Content Remove="BlazorServerApp.FunctionApp\**" />
     <Content Remove="BlazorServerApp.Test\**" />
     <Content Remove="BlazorServerApp.xUnitTests\**" />
+    <EmbeddedResource Remove="BlazorServerApp.FunctionApp\**" />
     <EmbeddedResource Remove="BlazorServerApp.Test\**" />
     <EmbeddedResource Remove="BlazorServerApp.xUnitTests\**" />
+    <None Remove="BlazorServerApp.FunctionApp\**" />
     <None Remove="BlazorServerApp.Test\**" />
     <None Remove="BlazorServerApp.xUnitTests\**" />
   </ItemGroup>
@@ -75,6 +79,10 @@
 
   <ItemGroup>
     <WCFMetadata Include="Connected Services" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="..\..\New folder %25283%2529\BlazorServerApp\Services\Validation\" />
   </ItemGroup>
 
 </Project>

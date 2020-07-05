@@ -161,6 +161,9 @@ namespace BlazorServerApp
                     }
                 });
             });
+
+            //services.AddDbContext<BlazorServerAppContext>(options =>
+            //        options.UseSqlServer(Configuration.GetConnectionString("BlazorServerAppContext")));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

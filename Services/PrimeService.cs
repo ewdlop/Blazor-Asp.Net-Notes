@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BlazorServerApp.Services
 {
-    public class PrimeService
+    public class PrimeService : IPrimeService
     {
         public bool IsPrime(int candidate) {
             if (candidate < 2) {
