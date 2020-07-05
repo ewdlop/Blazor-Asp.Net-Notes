@@ -39,6 +39,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace BlazorServerApp
 {
@@ -160,6 +161,25 @@ namespace BlazorServerApp
                     {
                         Name = "Use under LICX",
                         Url = new Uri("https://example.com/license"),
+                    }
+                });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme() {
+                    Description = "JWT Authorization header \"Authorization: Bearer {token}\"",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme{
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },new string[] {}
                     }
                 });
             });

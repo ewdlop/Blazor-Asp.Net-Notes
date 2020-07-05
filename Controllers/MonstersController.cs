@@ -158,12 +158,14 @@ namespace BlazorServerApp.Controllers
 
         // DELETE: api/Monsters/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Monster>> DeleteMonster(int id) {
+        public async Task<ActionResult<Monster>> DeleteMonster(int id)
+        {
 
             return NotFound();
 
             var monster = await _context.Monsters.FindAsync(id);
-            if (monster == null) {
+            if (monster == null)
+            {
                 return NotFound();
             }
 
