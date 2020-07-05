@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BlazorServerApp.Models.API.RPG.Validaiton
 {
-    public class Boss : ValidationAttribute
+    public class BossValidationAttribut : ValidationAttribute
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext) {
             var monster = (Monster)validationContext.ObjectInstance;

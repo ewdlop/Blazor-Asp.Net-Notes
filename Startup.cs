@@ -38,6 +38,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using System;
+using Newtonsoft.Json;
 
 namespace BlazorServerApp
 {
@@ -135,7 +136,8 @@ namespace BlazorServerApp
 
             services.AddBlazorise(blazoriseOptions => { }).AddBootstrapProviders().AddFontAwesomeIcons();
             services.AddRazorPages();
-            services.AddControllersWithViews(options => options.InputFormatters.Insert(0, GetJsonPatchInputFormatter()));
+            services.AddMvc().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+            //services.AddControllersWithViews(options => options.InputFormatters.Insert(0, GetJsonPatchInputFormatter()));
             services.AddServerSideBlazor();
             services.AddSignalR();
 
@@ -161,9 +163,6 @@ namespace BlazorServerApp
                     }
                 });
             });
-
-            //services.AddDbContext<BlazorServerAppContext>(options =>
-            //        options.UseSqlServer(Configuration.GetConnectionString("BlazorServerAppContext")));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -229,7 +228,8 @@ namespace BlazorServerApp
         private static NewtonsoftJsonPatchInputFormatter GetJsonPatchInputFormatter() {
             var builder = new ServiceCollection()
                 .AddLogging().AddControllersWithViews()
-                .AddNewtonsoftJson().Services.BuildServiceProvider();
+                .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
+                .Services.BuildServiceProvider();
 
             return builder
                 .GetRequiredService<IOptions<MvcOptions>>().Value.InputFormatters

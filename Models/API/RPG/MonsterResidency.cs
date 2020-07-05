@@ -1,13 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 
 namespace BlazorServerApp.Models.API.RPG
 {
     public class MonsterResidency
     {
         [Key]
-        [JsonPropertyName("id")]
+        [JsonProperty(PropertyName = "id")]
         [Display(Name = "Monster ID")]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
@@ -18,7 +18,7 @@ namespace BlazorServerApp.Models.API.RPG
         public Location Location { get; set; }
         public int LocationId { get; set; }
 
-        [JsonPropertyName("respawn_time")]
+        [JsonProperty(PropertyName = "respawn_time")]
         [Display(Name = "Respawn Time")]
         public float RespawnTime { get; set; }
     }

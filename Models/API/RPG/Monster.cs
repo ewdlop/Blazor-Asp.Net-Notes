@@ -1,13 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace BlazorServerApp.Models.API.RPG
 {
+    [JsonConverter(typeof(StringEnumConverter))]
     public enum MonsterType
     {
         Creature,
@@ -15,6 +14,7 @@ namespace BlazorServerApp.Models.API.RPG
         Humanoid
     }
 
+    [JsonConverter(typeof(StringEnumConverter))]
     public enum MonsteRarity
     {
         Boss,
@@ -22,6 +22,7 @@ namespace BlazorServerApp.Models.API.RPG
         Normal
     }
 
+    [JsonConverter(typeof(StringEnumConverter))]
     public enum AttackType
     {
         Magic,
@@ -32,30 +33,30 @@ namespace BlazorServerApp.Models.API.RPG
     public class Monster
     {
         [Key]
-        [JsonPropertyName("id")]
+        [JsonProperty(PropertyName = "id")]
         [Display(Name = "Monster ID")]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
         
         [StringLength(30)]
-        [JsonPropertyName("name")]
+        [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
         
-        [JsonPropertyName("type")]
+        [JsonProperty(PropertyName = "type")]
         [Column(TypeName = "nvarchar(25)")]
         public MonsterType Type { get; set; }
         
-        [JsonPropertyName("rarity")]
+        [JsonProperty(PropertyName = "rarity")]
         [Display(Name = "Monster Rarity")]
         [Column(TypeName = "nvarchar(15)")]
 
         public MonsteRarity Rarity { get; set; }
 
-        [JsonPropertyName("attack_type")]
+        [JsonProperty(PropertyName = "attack_type")]
         [Display(Name = "Attack Type")]
         [Column(TypeName = "nvarchar(15)")]
         public AttackType AttackType { get; set; }
-
+        [JsonProperty(PropertyName = "spawn_locations")]
         public ICollection<MonsterResidency> SpawnLocations { get; set; }
     }
 }

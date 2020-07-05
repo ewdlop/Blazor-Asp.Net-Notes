@@ -1,15 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BlazorServerApp.Data;
+using Newtonsoft.Json;
 using BlazorServerApp.Models.API.RPG;
 
 namespace BlazorServerApp.Controllers
 {
+    public class MonsterDTO
+    {
+        [JsonProperty(PropertyName = "id")]
+        public int Id { get; set; }
+
+        [JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        [JsonProperty(PropertyName = "type")]
+        public MonsterType Type { get; set; }
+
+        [JsonProperty(PropertyName = "rarity")]
+        public MonsteRarity Rarity { get; set; }
+
+        [JsonProperty(PropertyName = "attack_type")]
+        public AttackType AttackType { get; set; }
+
+        [JsonProperty(PropertyName = "spawn_locations")]
+        public ICollection<LocationDTO> SpawnLocations { get; set; }
+    }
+
+    public class LocationDTO
+    {
+        [JsonProperty(PropertyName = "id")]
+        public int Id { get; set; }
+
+        [JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        [JsonProperty(PropertyName = "respawn_time")]
+        public float RespawnTime { get; set; }
+    }
+
     [Route("api/[controller]")]
     [ApiController]
     public class MonstersController : ControllerBase
@@ -23,9 +55,21 @@ namespace BlazorServerApp.Controllers
 
         // GET: api/Monsters
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Monster>>> GetMonster()
+        public async Task<ActionResult<IEnumerable<MonsterDTO>>> GetMonster()
         {
-            return await _context.Monsters.ToListAsync();
+            return await _context.Monsters
+                .Select(m => new MonsterDTO {
+                    Id = m.Id,
+                    Name = m.Name,
+                    AttackType = m.AttackType,
+                    Rarity = m.Rarity,
+                    Type = m.Type,
+                    SpawnLocations = m.SpawnLocations.Select(s => new LocationDTO {
+                        RespawnTime = s.RespawnTime,
+                        Id = s.LocationId,
+                        Name = s.Location.Name
+                    }).ToList()
+                }).ToListAsync();
         }
 
         // GET: api/Monsters/5
