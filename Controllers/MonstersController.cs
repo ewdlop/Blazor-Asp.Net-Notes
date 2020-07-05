@@ -74,9 +74,21 @@ namespace BlazorServerApp.Controllers
 
         // GET: api/Monsters/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Monster>> GetMonster(int id)
+        public async Task<ActionResult<MonsterDTO>> GetMonster(int id)
         {
-            var monster = await _context.Monsters.FindAsync(id);
+            var monster = await _context.Monsters.Where(m => m.Id == id)
+            .Select(m => new MonsterDTO {
+                Id = m.Id,
+                Name = m.Name,
+                AttackType = m.AttackType,
+                Rarity = m.Rarity,
+                Type = m.Type,
+                SpawnLocations = m.SpawnLocations.Select(s => new LocationDTO {
+                    RespawnTime = s.RespawnTime,
+                    Id = s.LocationId,
+                    Name = s.Location.Name
+                }).ToList()
+            }).FirstOrDefaultAsync();
 
             if (monster == null)
             {
@@ -90,6 +102,8 @@ namespace BlazorServerApp.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutMonster(int id, Monster monster)
         {
+            return NotFound();
+
             if (id != monster.Id)
             {
                 return BadRequest();
@@ -120,6 +134,8 @@ namespace BlazorServerApp.Controllers
         [HttpPost]
         public async Task<ActionResult<Monster>> PostMonster(Monster monster)
         {
+            return NotFound();
+
             _context.Monsters.Add(monster);
             try
             {
@@ -142,11 +158,12 @@ namespace BlazorServerApp.Controllers
 
         // DELETE: api/Monsters/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Monster>> DeleteMonster(int id)
-        {
+        public async Task<ActionResult<Monster>> DeleteMonster(int id) {
+
+            return NotFound();
+
             var monster = await _context.Monsters.FindAsync(id);
-            if (monster == null)
-            {
+            if (monster == null) {
                 return NotFound();
             }
 
