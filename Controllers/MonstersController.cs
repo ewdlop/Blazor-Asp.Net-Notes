@@ -9,7 +9,7 @@ using BlazorServerApp.Models.API.RPG;
 
 namespace BlazorServerApp.Controllers
 {
-    public class MonsterDTO
+    public class MonsterGetDTo
     {
         [JsonProperty(PropertyName = "id")]
         public int Id { get; set; }
@@ -27,10 +27,28 @@ namespace BlazorServerApp.Controllers
         public AttackType AttackType { get; set; }
 
         [JsonProperty(PropertyName = "spawn_locations")]
-        public ICollection<LocationDTO> SpawnLocations { get; set; }
+        public ICollection<LocationGetDTO> SpawnLocations { get; set; }
     }
 
-    public class LocationDTO
+    public class MonsterPostDTo
+    {
+        [JsonProperty(PropertyName = "id")]
+        public int Id { get; set; }
+
+        [JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        [JsonProperty(PropertyName = "type")]
+        public MonsterType Type { get; set; }
+
+        [JsonProperty(PropertyName = "rarity")]
+        public MonsteRarity Rarity { get; set; }
+
+        [JsonProperty(PropertyName = "attack_type")]
+        public AttackType AttackType { get; set; }
+    }
+
+    public class LocationGetDTO
     {
         [JsonProperty(PropertyName = "id")]
         public int Id { get; set; }
@@ -55,16 +73,16 @@ namespace BlazorServerApp.Controllers
 
         // GET: api/Monsters
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MonsterDTO>>> GetMonster()
+        public async Task<ActionResult<IEnumerable<MonsterGetDTo>>> GetMonster()
         {
             return await _context.Monsters
-                .Select(m => new MonsterDTO {
+                .Select(m => new MonsterGetDTo {
                     Id = m.Id,
                     Name = m.Name,
                     AttackType = m.AttackType,
                     Rarity = m.Rarity,
                     Type = m.Type,
-                    SpawnLocations = m.SpawnLocations.Select(s => new LocationDTO {
+                    SpawnLocations = m.SpawnLocations.Select(s => new LocationGetDTO {
                         RespawnTime = s.RespawnTime,
                         Id = s.LocationId,
                         Name = s.Location.Name
@@ -74,16 +92,16 @@ namespace BlazorServerApp.Controllers
 
         // GET: api/Monsters/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<MonsterDTO>> GetMonster(int id)
+        public async Task<ActionResult<MonsterGetDTo>> GetMonster(int id)
         {
             var monster = await _context.Monsters.Where(m => m.Id == id)
-            .Select(m => new MonsterDTO {
+            .Select(m => new MonsterGetDTo {
                 Id = m.Id,
                 Name = m.Name,
                 AttackType = m.AttackType,
                 Rarity = m.Rarity,
                 Type = m.Type,
-                SpawnLocations = m.SpawnLocations.Select(s => new LocationDTO {
+                SpawnLocations = m.SpawnLocations.Select(s => new LocationGetDTO {
                     RespawnTime = s.RespawnTime,
                     Id = s.LocationId,
                     Name = s.Location.Name
@@ -100,16 +118,22 @@ namespace BlazorServerApp.Controllers
 
         // PUT: api/Monsters/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMonster(int id, Monster monster)
+        public async Task<IActionResult> PutMonster(int id, MonsterPostDTo monster)
         {
-            return NotFound();
-
             if (id != monster.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(monster).State = EntityState.Modified;
+            Monster newMonster = new Monster {
+                Id = monster.Id,
+                AttackType = monster.AttackType,
+                Rarity = monster.Rarity,
+                Name = monster.Name,
+                Type = monster.Type
+            };
+
+            _context.Entry(newMonster).State = EntityState.Modified;
 
             try
             {
@@ -132,11 +156,18 @@ namespace BlazorServerApp.Controllers
 
         // POST: api/Monsters
         [HttpPost]
-        public async Task<ActionResult<Monster>> PostMonster(Monster monster)
+        public async Task<ActionResult<MonsterPostDTo>> PostMonster(MonsterPostDTo monster)
         {
-            return NotFound();
+            Monster newMonster = new Monster {
+                Id = monster.Id,
+                AttackType = monster.AttackType,
+                Rarity = monster.Rarity,
+                Name = monster.Name,
+                Type = monster.Type
+            };
 
-            _context.Monsters.Add(monster);
+            _context.Monsters.Add(newMonster);
+            
             try
             {
                 await _context.SaveChangesAsync();

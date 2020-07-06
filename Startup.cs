@@ -183,6 +183,8 @@ namespace BlazorServerApp
                     }
                 });
             });
+
+            services.AddSwaggerGenNewtonsoftSupport();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
