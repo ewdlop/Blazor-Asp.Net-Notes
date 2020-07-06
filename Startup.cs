@@ -21,7 +21,6 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.Azure.Cosmos;
-using Microsoft.Bot.Builder.AI.QnA;
 using Microsoft.Bot.Builder.BotFramework;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
 using Microsoft.Bot.Builder;
@@ -33,13 +32,12 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using System;
-using Newtonsoft.Json;
-using System.Collections.Generic;
 
 namespace BlazorServerApp
 {
@@ -143,22 +141,18 @@ namespace BlazorServerApp
             services.AddSignalR();
 
 
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo
-                {
+            services.AddSwaggerGen(c => {
+                c.SwaggerDoc("v1", new OpenApiInfo {
                     Version = "v1",
                     Title = "API",
                     Description = "A simple example ASP.NET Core Web API",
                     TermsOfService = new Uri("https://example.com/terms"),
-                    Contact = new OpenApiContact
-                    {
+                    Contact = new OpenApiContact {
                         Name = "ewdlop",
                         Email = "ray810815@gmail.com",
                         Url = new Uri("https://example.com/terms"),
                     },
-                    License = new OpenApiLicense
-                    {
+                    License = new OpenApiLicense {
                         Name = "Use under LICX",
                         Url = new Uri("https://example.com/license"),
                     }
@@ -183,7 +177,6 @@ namespace BlazorServerApp
                     }
                 });
             });
-
             services.AddSwaggerGenNewtonsoftSupport();
         }
 
