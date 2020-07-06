@@ -20,7 +20,7 @@ and React(using Javascript Interop and ReactDOM): https://github.com/hassanhabib
 ## Link
 Website link: https://raymond-blazor-server-web-app.azurewebsites.net/</br>
 Please feel free to register a new user or use the following user to login.</br>
-Demo User: demo2@email.com
+Demo User: demo2@email.com</br>
 Password: E^ImktfT9mS$XvZ
 
 ## ScreenShot
