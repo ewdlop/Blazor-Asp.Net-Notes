@@ -25,4 +25,4 @@ Password: E^ImktfT9mS$XvZ
 
 ## ScreenShot
 ![ScreenShot1](https://cdn.discordapp.com/attachments/379496242104762374/728066243416031282/wow.PNG)
-![Screenshot2](https://cdn.discordapp.com/attachments/379496242104762374/728406682115244112/swagger-ui.PNG)
+![Screenshot2](https://cdn.discordapp.com/attachments/379496242104762374/729491141501779968/swagger-ui.PNG)
