@@ -33,6 +33,13 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: 'Pay-As-You-Go (58c02e47-43d2-4827-a783-5ff7eccca2c2)'
+    scriptType: 'pscore'
+    scriptLocation: 'inlineScript'
+    inlineScript: 'az login --service-principal -u $(username) -p $(password) --tenant $(tenantId)'
+
 - task: DotNetCoreCLI@2
   inputs:
     command: test
