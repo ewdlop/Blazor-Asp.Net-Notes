@@ -33,7 +33,7 @@ steps:
     azureSubscription: 'Pay-As-You-Go (58c02e47-43d2-4827-a783-5ff7eccca2c2)'
     scriptType: 'pscore'
     scriptLocation: 'inlineScript'
-    inlineScript: 'dotnet test .\BlazorServerApp.xUnitTests\BlazorServerApp.xUnitTests.csproj --configuration $(buildConfiguration) --collect "Code coverage"'
+    inlineScript: 'dotnet test .\BlazorServerApp.xUnitTests\BlazorServerApp.xUnitTests.csproj --configuration $(buildConfiguration) --logger trx --collect "Code coverage"'
 
 - task: PublishTestResults@2
   inputs:
