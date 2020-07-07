@@ -38,12 +38,6 @@ steps:
     azureSubscription: 'Pay-As-You-Go (58c02e47-43d2-4827-a783-5ff7eccca2c2)'
     scriptType: 'pscore'
     scriptLocation: 'inlineScript'
-    inlineScript: 'az login --service-principal -u $(username) -p $(password) --tenant $(tenantId)'
-
-- task: DotNetCoreCLI@2
-  inputs:
-    command: test
-    projects: '**/*Tests/*.csproj'
-    arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
+    inlineScript: 'dotnet test .\BlazorServerApp.xUnitTests\BlazorServerApp.xUnitTests.csproj --configuration $(buildConfiguration) --collect "Code coverage"'
 
 - task: PublishBuildArtifacts@1
