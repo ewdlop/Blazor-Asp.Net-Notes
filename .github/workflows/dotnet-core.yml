@@ -21,5 +21,9 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --configuration Release --no-restore
+    - name: Login via Az module
+      uses: azure/login@v1.1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
     - name: Test
       run: dotnet test .\BlazorServerApp.xUnitTests\BlazorServerApp.xUnitTests.csproj --configuration Release --no-restore --verbosity normal
