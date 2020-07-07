@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using BlazorServerApp.Data;
 using Newtonsoft.Json;
 using BlazorServerApp.Models.API.RPG;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace BlazorServerApp.Controllers
 {
@@ -60,6 +62,8 @@ namespace BlazorServerApp.Controllers
         public float RespawnTime { get; set; }
     }
 
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,
+    Policy = "Name")]
     [Route("api/[controller]")]
     [ApiController]
     public class MonstersController : ControllerBase
