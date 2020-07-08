@@ -38,6 +38,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using System;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace BlazorServerApp
 {
@@ -113,12 +114,11 @@ namespace BlazorServerApp
                 options.AddPolicy("Name", policy => policy.RequireClaim(ClaimTypes.Name));
             });
 
-            //services.AddAuthentication().AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
-            //{
+            //services.AddAuthentication().AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options => { 
             //    options.SlidingExpiration = true;
-            //    //options.LoginPath = $"/Identity/Account/Login";
-            //    //options.LogoutPath = $"/Identity/Account/Logout";
-            //    //options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+            //    options.LoginPath = $"/Identity/Account/Login";
+            //    options.LogoutPath = $"/Identity/Account/Logout";
+            //    options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
             //});
 
             services.AddAuthentication().AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
