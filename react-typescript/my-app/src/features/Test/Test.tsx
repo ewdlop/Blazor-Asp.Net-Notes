@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState, useEffect} from 'react';
 import './Test.css';
 
 const mystyle = {
@@ -12,9 +12,45 @@ const mystyle2 = {
     height: '200px'
 };
 
+interface myState {
+    scroller: number;
+}
+
+
+
 const TestList: React.FC = () => {
+
+    const [myState,setMyState] = useState<myState>({scroller: 0});
+
+    useEffect(()=>{
+        const handleScroll = () =>{
+            setMyState({scroller: document.documentElement.scrollTop});
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) 
+            {
+                const navbar : HTMLElement | null =  document.getElementById("navbar");
+                if(navbar)
+                {
+                    navbar.style.top = "0";
+                }
+            } else {
+                const navbar : HTMLElement | null =  document.getElementById("navbar");
+                if(navbar)
+                {
+                    navbar.style.top = "-50px";
+                }
+            }
+        }
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    },[myState])
+
     return (
         <div>
+            <div id="navbar">
+                <a href="#home">Home</a>
+                <a href="#news">News</a>
+                <a href="#contact">Contact</a>
+            </div>
             <div className="parallax-image img1">
                 <div style={mystyle}></div>
             </div>
@@ -80,4 +116,4 @@ const TestList: React.FC = () => {
     );
 }
 
-export default () => <TestList/>;
+export default TestList;
