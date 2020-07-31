@@ -1,0 +1,111 @@
+html {
+    box-sizing: border-box;
+}
+  
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+/* The Masonry Container */
+.masonry {
+  margin: 1em auto;
+  max-width: 950px;
+  column-gap: 1.5em;
+}
+
+/* The Masonry Brick */
+.item {
+  background: #fff;
+  /* /* padding: 1em; */
+  /* margin: 0 0 0.5rem; */
+  /* border-radius: 15px 15px; */
+  position: relative;
+}
+
+.item img{
+  height: 100%;
+  max-width: 100%;
+  display: block;
+  margin: auto;
+}
+
+.item .overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: .5s ease;
+  background-color: #008CBA;
+}
+
+.item:hover .overlay{
+  opacity: 1;
+}
+
+.item .overlay .text {
+  color: white;
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+
+.parallax-image {
+
+  height: 50%;
+
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.img1 { background-image: url("https://i.pinimg.com/originals/9d/a7/aa/9da7aaf50833e6a0580c7ebea92f4a06.png"); }
+.img2 { background-image: url("https://cdn3.tnwcdn.com/wp-content/blogs.dir/1/files/2015/04/colortheory.jpg") }
+.img3 { background-image: url("https://backgroundcheckall.com/wp-content/uploads/2017/12/website-background-design.jpg"); }
+
+
+.sticky {
+  border-radius: 15px 50px;
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  width: 250px;
+  height: 250px;
+  padding: 1rem;
+  background-image: radial-gradient(circle, #025dee 0%, #04398f 100%);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  text-align: center;
+}
+
+/* Masonry on large screens */
+@media only screen and (min-width: 1024px) {
+  .masonry {
+    column-count: 4;
+  }
+}
+
+/* Masonry on medium-sized screens */
+@media only screen and (max-width: 1023px) and (min-width: 768px) {
+  .masonry {
+    column-count: 3;
+  }
+}
+
+/* Masonry on small screens */
+@media only screen and (max-width: 767px) and (min-width: 540px) {
+  .masonry {
+    column-count: 2;
+  }
+}
