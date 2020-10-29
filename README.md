@@ -18,12 +18,6 @@ QnAMaker Bot:https://github.com/microsoft/BotBuilder-Samples/tree/master/samples
 Xunit https://xunit.net/
 and React(using Javascript Interop and ReactDOM): https://github.com/hassanhabib/blazorxreact <br/>
 
-## Link
-Website link: https://raymond-blazor-server-web-app.azurewebsites.net/</br>
-Please feel free to register a new user or use the following user to login.</br>
-Demo User: demo2@email.com</br>
-Password: E^ImktfT9mS$XvZ
-
 ## ScreenShot
 ![ScreenShot1](https://cdn.discordapp.com/attachments/379496242104762374/728066243416031282/wow.PNG)
 ![Screenshot2](https://cdn.discordapp.com/attachments/379496242104762374/729491141501779968/swagger-ui.PNG)
