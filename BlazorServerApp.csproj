@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <UserSecretsId>aspnet-BlazorServerApp-43983CEF-AAA9-409B-842A-F6A5A1C9CDE7</UserSecretsId>
   </PropertyGroup>
 
