@@ -198,16 +198,16 @@ namespace BlazorServerApp.Controllers
 
             return NotFound();
 
-            var monster = await _context.Monsters.FindAsync(id);
-            if (monster == null)
-            {
-                return NotFound();
-            }
+            //var monster = await _context.Monsters.FindAsync(id);
+            //if (monster == null)
+            //{
+            //    return NotFound();
+            //}
 
-            _context.Monsters.Remove(monster);
-            await _context.SaveChangesAsync();
+            //_context.Monsters.Remove(monster);
+            //await _context.SaveChangesAsync();
 
-            return monster;
+            //return monster;
         }
 
         private bool MonsterExists(int id)

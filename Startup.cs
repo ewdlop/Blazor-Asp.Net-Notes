@@ -178,6 +178,10 @@ namespace BlazorServerApp
                 });
             });
             services.AddSwaggerGenNewtonsoftSupport();
+
+            //ASP.NET Core 5.0 change
+            services.AddDatabaseDeveloperPageExceptionFilter();
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -186,7 +190,7 @@ namespace BlazorServerApp
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
+                //app.UseDatabaseErrorPage();
             }
             else
             {

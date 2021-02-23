@@ -82,9 +82,9 @@
                 await _hubConnection.StartAsync();
             }
         }
-        catch(Exception e)
+        catch(Exception)
         {
-
+            throw;
         }
         await _hubConnection.SendAsync("UserConnected");
     }
