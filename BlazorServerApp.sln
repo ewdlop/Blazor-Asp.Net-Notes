@@ -7,6 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorServerApp", "BlazorSe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorServerApp.xUnitTests", "BlazorServerApp.xUnitTests\BlazorServerApp.xUnitTests.csproj", "{C1E3B2B3-AFCD-4B55-8901-1D5646E81CAB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "gRPC", "gRPC", "{364EF738-41D2-43FC-9505-29D238B43CBE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "gRPCServiceClient", "gRPC\gRPCServiceClient\gRPCServiceClient.csproj", "{2E03A84B-083E-4725-9AF6-4F1BFAF21E55}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "gRPCServiceServer", "gRPC\gRPCServiceServer\gRPCServiceServer.csproj", "{5F565A9D-EEE1-485A-9F3F-4503912E0C7B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,9 +27,21 @@ Global
 		{C1E3B2B3-AFCD-4B55-8901-1D5646E81CAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1E3B2B3-AFCD-4B55-8901-1D5646E81CAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C1E3B2B3-AFCD-4B55-8901-1D5646E81CAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E03A84B-083E-4725-9AF6-4F1BFAF21E55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E03A84B-083E-4725-9AF6-4F1BFAF21E55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E03A84B-083E-4725-9AF6-4F1BFAF21E55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E03A84B-083E-4725-9AF6-4F1BFAF21E55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F565A9D-EEE1-485A-9F3F-4503912E0C7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F565A9D-EEE1-485A-9F3F-4503912E0C7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F565A9D-EEE1-485A-9F3F-4503912E0C7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F565A9D-EEE1-485A-9F3F-4503912E0C7B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2E03A84B-083E-4725-9AF6-4F1BFAF21E55} = {364EF738-41D2-43FC-9505-29D238B43CBE}
+		{5F565A9D-EEE1-485A-9F3F-4503912E0C7B} = {364EF738-41D2-43FC-9505-29D238B43CBE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F1618E7F-ADE0-4D29-877D-42340729ADFD}

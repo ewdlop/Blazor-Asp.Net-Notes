@@ -9,15 +9,27 @@
     <Compile Remove="BlazorServerApp.FunctionApp\**" />
     <Compile Remove="BlazorServerApp.Test\**" />
     <Compile Remove="BlazorServerApp.xUnitTests\**" />
+    <Compile Remove="gRPCServiceClient\**" />
+    <Compile Remove="gRPCServiceServer\**" />
+    <Compile Remove="gRPC\**" />
     <Content Remove="BlazorServerApp.FunctionApp\**" />
     <Content Remove="BlazorServerApp.Test\**" />
     <Content Remove="BlazorServerApp.xUnitTests\**" />
+    <Content Remove="gRPCServiceClient\**" />
+    <Content Remove="gRPCServiceServer\**" />
+    <Content Remove="gRPC\**" />
     <EmbeddedResource Remove="BlazorServerApp.FunctionApp\**" />
     <EmbeddedResource Remove="BlazorServerApp.Test\**" />
     <EmbeddedResource Remove="BlazorServerApp.xUnitTests\**" />
+    <EmbeddedResource Remove="gRPCServiceClient\**" />
+    <EmbeddedResource Remove="gRPCServiceServer\**" />
+    <EmbeddedResource Remove="gRPC\**" />
     <None Remove="BlazorServerApp.FunctionApp\**" />
     <None Remove="BlazorServerApp.Test\**" />
     <None Remove="BlazorServerApp.xUnitTests\**" />
+    <None Remove="gRPCServiceClient\**" />
+    <None Remove="gRPCServiceServer\**" />
+    <None Remove="gRPC\**" />
   </ItemGroup>
 
   <ItemGroup>
