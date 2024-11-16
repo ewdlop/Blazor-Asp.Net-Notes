@@ -1,12 +1,15 @@
 ![.NET Core](https://github.com/ewdlop/Blazor-Server-App/workflows/.NET%20Core/badge.svg)
-# Web API App
+
+# Blazor-Asp.Net-Notes
+
+## Web API App
 Latest: 09/24/2023: https://dev.azure.com/ray810815/RandomAPIApp
 
-# Blazor Server App
-## Azure DevOps Service
+## Blazor Server App
+### Azure DevOps Service
 Profile: https://dev.azure.com/ray810815/Blazor%20Server%20App <br/>
 DevOps Dashboard: https://dev.azure.com/ray810815/Blazor%20Server%20App/_dashboards/dashboard/8e6a01e2-c4df-4413-bee7-aa1c4e7362af/
-## Purpose
+### Purpose
 The main purpose of this side project is learning and experimenting with tools/features offered by Microsft, .Net Community, and especially of those provided by the Azure Cloud. <br/> 
 The project includes the basic usage of:<br/>
 Blazor Components, SignalR, Authorization Policy, Identity Claims, Azure Key Vault(for storing user secret/Connection Strings, and API Key,etc), SendGrid(Email),<br /> 
